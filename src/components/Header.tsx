@@ -2,13 +2,9 @@ import { useState } from 'react'
 import { FaSearch } from 'react-icons/fa'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 
-interface Props {
-  search: string
-  setSearch: (value: string) => void
-}
-
-export default function Header({ search, setSearch }: Props) {
+export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const [search, setSearch] = useState('')
 
   const continents = ['Africa', 'America', 'Asia', 'Europe', 'Oceania']
 

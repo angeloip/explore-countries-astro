@@ -1,0 +1,127 @@
+---
+import { type Countries, type Translation } from '../../types'
+import Layout from '../../layouts/Layout.astro'
+import { countryData } from '../../data'
+import { FaArrowLeftLong } from 'react-icons/fa6'
+
+interface Props {
+  country: Countries
+}
+
+const { name } = Astro.params
+const country = countryData.find((country) => country.name.common === name)
+const borderCountries = countryData.filter((c) =>
+  c.borders?.includes(country?.cca3 ?? '')
+)
+---
+
+<Layout title={country?.name.common}>
+  <main class="mx-auto my-8 max-w-6xl px-3 movil:max-w-[450px]">
+    <a
+      class="px-6 py-2 dark:bg-[#2B3845] flex gap-3 items-center rounded-lg shadow-sm shadow-zinc-600 mb-8 w-fit"
+      href="/"
+    >
+      <FaArrowLeftLong />
+       Back
+    </a>
+
+    <div class="flex gap-10 items-center movil:flex-col movil:items-start">
+      <picture class="w-[45%] movil:w-full">
+        <img
+          src={country?.flags.png}
+          alt={country?.name.common}
+          transition:name=`picture ${country?.name.common}`
+          class="w-full rounded-lg"
+        />
+      </picture>
+      <div class="flex flex-col gap-7">
+        <h3
+          class="text-3xl font-bold"
+          transition:name=`title ${country?.name.common}`
+        >
+          {country?.name.common}
+        </h3>
+        <div class="flex gap-10 movil:flex-col">
+          <div>
+            <p class="flex gap-2">
+              <span>Native Name:</span>
+              <span class="text-gray-400">
+                {
+                  Object.values(
+                    country?.name?.nativeName ??
+                      ({} as { [s: string]: Translation })
+                  )[0]?.common
+                }
+              </span>
+            </p>
+            <p class="flex gap-2">
+              <span>Population:</span>
+              <span class="text-gray-400"
+                >{country?.population.toLocaleString()}</span
+              >
+            </p>
+            <p class="flex gap-2">
+              <span>Region:</span>
+              <span class="text-gray-400">{country?.region}</span>
+            </p>
+            <p class="flex gap-2">
+              <span>Sub Region:</span>
+              <span class="text-gray-400">{country?.subregion}</span>
+            </p>
+            <p class="flex gap-2">
+              <span>Capital:</span>
+              <span class="text-gray-400"
+                >{country?.capital && country?.capital[0]}</span
+              >
+            </p>
+          </div>
+          <div>
+            <p class="flex gap-2">
+              <span>Top Level Domain:</span>
+              <span class="text-gray-400"
+                >{country?.tld && country?.tld[0]}</span
+              >
+            </p>
+            <p class="flex gap-2">
+              <span>Currencies:</span>
+              <span class="text-gray-400"
+                >{
+                  Object.values(country?.currencies as { name: string }[]).map(
+                    (c) => c.name
+                  )
+                }</span
+              >
+            </p>
+            <p class="flex gap-2">
+              <span>Languages:</span>
+              <span class="text-gray-400"
+                >{
+                  Object.values(
+                    country?.languages as { [s: string]: string }
+                  ).join(', ')
+                }</span
+              >
+            </p>
+          </div>
+        </div>
+        <div>
+          <p class="flex gap-2 items-center movil:flex-col movil:items-start">
+            <span class="font-bold">Border Countries:</span>
+            <span class="flex gap-2 flex-wrap">
+              {
+                borderCountries.map((country) => (
+                  <a
+                    href={`/country/${country.name.common}`}
+                    class="px-4 py-2 dark:bg-[#2B3845] flex gap-3 items-center rounded-lg shadow-sm shadow-zinc-600"
+                  >
+                    {country.name.common}
+                  </a>
+                ))
+              }
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,17 @@
+---
+import Header from './Header'
+import CountriesCards from './CountriesCards.astro'
+import Pagination from './Pagination'
+---
+
+<main class="mx-auto my-8 max-w-7xl px-3">
+  <Header client:load />
+
+  <section
+    class="my-8 grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-8"
+  >
+    <CountriesCards />
+  </section>
+
+  <Pagination />
+</main>
